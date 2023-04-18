@@ -22,6 +22,7 @@ export default function AddCustomer() {
 
     const [agentimage, setagentimage] = useState('');
 
+
     const onImageChange = (e) => {
         console.log(e.target.files);
         setagentimage(e.target.files[0]);

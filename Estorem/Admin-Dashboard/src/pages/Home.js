@@ -1,7 +1,8 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import '../App.css';
 import Navbar from '../components/Navbar';
-import ViewSingleProduct from '../components/viewsingle/ViewSingleProduct';
+import Switch from '../components/Switch';
+
 
 
 
@@ -20,6 +21,8 @@ export default function Home() {
         console.log(json);
     }
 
+    const [isToggled, setisToggled] = useState(false)
+
 
     useEffect(() => {
         console.log("logn")
@@ -30,6 +33,9 @@ export default function Home() {
         <div className="container">
             <div className="main bg-tailtertiary h-screen m-0 p-0">
                 <Navbar pagename="Dashboard Home Page" />
+                <br />
+                switch
+                <Switch isToggled={isToggled} onToggle={()=>setisToggled(!isToggled)}/>
                 {console.log('navbar')}
                 <h2 className='font-poppins font-bold text-5xl text-center mt-48'>Welcome to Admin Dashboard</h2>
                 

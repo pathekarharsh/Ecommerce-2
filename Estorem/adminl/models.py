@@ -4,8 +4,11 @@ from django.db.models import Model
 
 
 class Category(models.Model):
+
+    allowed= models.BooleanField(default=False)
     category= models.CharField(max_length=50, default="fruits")
     color= models.CharField(max_length=10, default='', blank=True, null= True)
+
 
     @staticmethod
     def get_all_categories():
@@ -18,6 +21,8 @@ class Category(models.Model):
 class SubCategory(models.Model):
     subcategory= models.CharField(max_length=50)
     category= models.ForeignKey(Category,on_delete=models.CASCADE,default=1 )
+
+    allowed= models.BooleanField(default=False)
     color= models.CharField(max_length=10, default='', blank=True, null= True)
     
     @staticmethod

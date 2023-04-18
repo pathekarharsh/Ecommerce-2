@@ -3,6 +3,7 @@ import { useState,useEffect } from "react";
 import '../../App.css';
 import Navbar from '../Navbar';
 import axios from 'axios';
+import Switch from '../Switch';
 
 
 export default function AddSubcategory() {
@@ -31,19 +32,23 @@ export default function AddSubcategory() {
         category: '',
         subcategory: '',
         color: '',
-        productcatallowed: 0
     })
+
+    const [isToggled, setisToggled] = useState(false)
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(obj+" "+isToggled)
         axios.post("http://localhost:8000/api/customer/",{
             category:obj.category,
             subcategory:obj.subcategory,
             color:obj.color,
+            allowed:isToggled
         })
         .then((response)=>{
             console.log(response);
-            setobj({ category: '', subcategory: '', color: '', productcatallowed: 0 });
+            setobj({ category: '', subcategory: '', color: ''});
             // e.target.reset();
         })
         .catch((error)=>console.log(error))
@@ -51,7 +56,7 @@ export default function AddSubcategory() {
 
     const onDiscard = (e) => {
         e.preventDefault();
-        setobj({ category: '', subcategory: '', color: '', productcatallowed: 0 });
+        setobj({ category: '', subcategory: '', color: ''});
     }
 
     const onChange = (e) => {
@@ -100,7 +105,9 @@ export default function AddSubcategory() {
                                         <label className='py-3 font-bold'>Product Allowed : yes no toggle button</label>
                                     </div>
                                     <div className='flex-col justify-center'>
-                                        <input required value={obj.productcatallowed} type="" name="productcatallowed" id="productcatallowed" />
+                                        {/* <input required value={obj.productcatallowed} type="" name="productcatallowed" id="productcatallowed" /> */}
+                                        <Switch isToggled={isToggled} onToggle={()=>setisToggled(!isToggled)}/>
+
                                     </div>
                                 </div>
                                 <div className='flex mx-auto mt-2'>

@@ -3,24 +3,30 @@ import { useState } from "react";
 import '../../App.css';
 import Navbar from '../Navbar';
 import axios from 'axios';
+import Switch from '../Switch';
 
 export default function AddCategory() {
 
 
 
 
-    const [catobj, setcatobj] = useState({ category: '', color: '',subcatallowed:0 });
+    const [catobj, setcatobj] = useState({ category: '', color: ''});
+    const [isToggled, setisToggled] = useState(false)
+
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(catobj+" "+isToggled)
         axios.post("http://localhost:8000/api/category/",{
             category:catobj.category,
             color:catobj.color,
+            allowed:isToggled
         })
         .then((response)=>{
             console.log(response);
-            setcatobj({ category: '', color: '',subcatallowed:0 });
+            setcatobj({ category: '', color: ''});
+            setisToggled(false);
             // e.target.reset();
         })
         .catch((error)=>console.log(error))
@@ -28,7 +34,7 @@ export default function AddCategory() {
 
     const onDiscard = (e) => {
         e.preventDefault();
-        setcatobj({ category: '', color: '',subcatallowed:0 });
+        setcatobj({ category: '', color: '' });
     }
 
     const onChange = (e) => {
@@ -66,9 +72,9 @@ export default function AddCategory() {
                                 </div>
                                 <div className='flex-col py-2'>
 
-                                    <label>Subcategory Allowed : yes no toggle button</label>
-                                    <input value={catobj.subcatallowed} type="checkbox" name="subcatallowed" id="subcatallowed" />
-
+                                    <label  className="mr-4">Subcategory Allowed : </label>
+                                    {/* <input value={catobj.subcatallowed} type="checkbox" name="subcatallowed" id="subcatallowed" /> */}
+                                    <Switch isToggled={isToggled} onToggle={()=>setisToggled(!isToggled)}/>
                                 </div>
 
                                 <div className='flex mx-auto'>
