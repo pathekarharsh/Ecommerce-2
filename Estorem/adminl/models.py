@@ -127,11 +127,14 @@ class Brand(models.Model):
     #vendors= models.ForeignKey(Vendor,on_delete=models.CASCADE,default=1 )
 
 class Product(models.Model):
-    name = models.CharField(max_length=60)
-    price= models.IntegerField(default=0)
+    productname = models.CharField(max_length=60)
+    productprice= models.IntegerField(default=0)
     category= models.ForeignKey(Category,on_delete=models.CASCADE,default=1 )
-    description= models.CharField(max_length=250, default='', blank=True, null= True)
-    image= models.ImageField(upload_to='uploads/products/')
+    subcategory= models.CharField(max_length=50)
+    brand=models.CharField(max_length=50)
+    uom=models.CharField(max_length=50)
+    offer=models.IntegerField(default='')
+    #agentimage= models.ImageField(upload_to='uploads/customers/',null=True)
 
     @staticmethod
     def get_products_by_id(ids):

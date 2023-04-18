@@ -1,8 +1,9 @@
 import React from 'react'
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import '../../App.css';
 import Navbar from '../Navbar';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 
 
@@ -15,12 +16,34 @@ export default function EditProduct() {
         { id: 4, category: 'meat' },
     ])
 
+    const getCatArray = async () => {
+        const response = await fetch(`http://127.0.0.1:8000/api/category/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const json = await response.json();
+        setcatarray(json);
+    }
+
     const [subcatarray, setsubcatarray] = useState([
         { id: 1, subcategory: 'apple' },
         { id: 2, subcategory: 'banana' },
         { id: 3, subcategory: 'mango' },
         { id: 4, subcategory: 'orange' },
     ])
+
+    const getSubcatArray = async () => {
+        const response = await fetch(`http://127.0.0.1:8000/api/subcategory/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const json = await response.json();
+        setsubcatarray(json);
+    }
 
     const [brandarray, setbrandarray] = useState([
         { id: 1, brand: 'ParleG' },
@@ -29,12 +52,35 @@ export default function EditProduct() {
         { id: 4, brand: 'Palekar' },
     ])
 
+    const getBrandArray = async () => {
+        const response = await fetch(`http://127.0.0.1:8000/api/brand/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const json = await response.json();
+        setbrandarray(json);
+    }
+
     const [uomarray, setuomarray] = useState([
-        { id: 1, uom: 1 },
-        { id: 2, uom: 2 },
-        { id: 3, uom: 3 },
-        { id: 4, uom: 4 },
+        { id: 1, uom: "gm" },
+        { id: 2, uom: "kg" },
+        { id: 3, uom: "ml" },
+        { id: 4, uom: "ltr" },
     ])
+
+    const getUomArray = async () => {
+        const response = await fetch(`http://127.0.0.1:8000/api/uom/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const json = await response.json();
+        setuomarray(json);
+    }
+
 
     const [offerarray, setofferarray] = useState([
         { id: 1, offer: "10 % off" },
@@ -43,21 +89,50 @@ export default function EditProduct() {
         { id: 4, offer: "Buy 1 Get 1" },
     ])
 
+    const getOfferArray = async () => {
+        const response = await fetch(`http://127.0.0.1:8000/api/offer/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        const json = await response.json();
+        setofferarray(json);
+    }
+
+    const location = useLocation();
+    let oldobj = location.state.obj.e;
+
+
     const [obj, setobj] = useState({
-        productname: '',
-        productprice: 0,
-        productimage: null,
-        category: '',
-        subcategory: '',
-        brand: '',
-        uom: 0,
-        offer: ''
+        productname: oldobj.productname,
+        productprice: oldobj.productprice,
+        category: oldobj.category,
+        subcategory: oldobj.subcategory,
+        brand: oldobj.brand,
+        uom: oldobj.uom,
+        offer: oldobj.offer
     })
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (obj.productname === '' || obj.productprice === 0 || obj.productimage === null || obj.category === '' || obj.subcategory === '' || obj.brand === '' || obj.uom === 0 || obj.offer === '') {
+        if (obj.productname === '' || obj.productprice === 0 || obj.category === '' || obj.subcategory === '' || obj.brand === '' || obj.uom === 0 || obj.offer === '') {
             alert('Please fill all the fields');
+        }
+        else {
+            axios.post(`http://localhost:8000/api/product/${oldobj.id}`, {
+                productname: obj.productname,
+                productprice: obj.productprice,
+                category: obj.category,
+                subcategory: obj.subcategory,
+                brand: obj.brand,
+                uom: obj.uom,
+                offer: obj.offer,
+            })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => console.log(error))
         }
         console.log(obj);
     }
@@ -67,7 +142,6 @@ export default function EditProduct() {
         setobj({
             productname: '',
             productprice: 0,
-            productimage: null,
             category: '',
             subcategory: '',
             brand: '',
@@ -79,6 +153,15 @@ export default function EditProduct() {
     const onChange = (e) => {
         setobj({ ...obj, [e.target.name]: e.target.value });
     }
+
+
+    useEffect(() => {
+        getCatArray();
+        getSubcatArray();
+        getBrandArray();
+        getUomArray();
+        // getOfferArray();
+    }, [])
 
     return (
         <>
@@ -130,7 +213,7 @@ export default function EditProduct() {
                                     </select>
                                 </div>
                                 <div className='my-2'>
-                                    <label>UMO(Kg's)</label><br />
+                                    <label>Unit of Measurement</label><br />
                                     <select required value={obj.uom} className='mt-1 border px-2 py-2 w-full rounded-md' name="uom" onChange={onChange}>
                                         {uomarray.map((b) => (
                                             <option key={b.id} value={b.uom}>{b.uom}</option>
