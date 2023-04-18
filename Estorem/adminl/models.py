@@ -127,13 +127,13 @@ class Brand(models.Model):
     #vendors= models.ForeignKey(Vendor,on_delete=models.CASCADE,default=1 )
 
 class Product(models.Model):
-    productname = models.CharField(max_length=60)
-    productprice= models.IntegerField(default=0)
+    productname = models.CharField(max_length=60,default="coldr")
+    productprice= models.IntegerField(default=300)
     category= models.ForeignKey(Category,on_delete=models.CASCADE,default=1 )
-    subcategory= models.CharField(max_length=50)
-    brand=models.CharField(max_length=50)
-    uom=models.CharField(max_length=50)
-    offer=models.IntegerField(default='')
+    subcategory= models.CharField(max_length=50,default="milk")
+    brand=models.CharField(max_length=50,default="PARLEG")
+    uom=models.CharField(max_length=50,default="abc")
+    offer=models.CharField(max_length=10,default='20%')
     #agentimage= models.ImageField(upload_to='uploads/customers/',null=True)
 
     @staticmethod

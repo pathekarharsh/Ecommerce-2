@@ -1,19 +1,7 @@
 # serializers.py
 
 from rest_framework import serializers
-from .models import Category
-from .models import Product
-from .models import SubCategory
-
-from .models import Customer
-from .models import Uom
-from .models import Vendor
-from .models import DelivPart
-from .models import Invman
-from .models import FinManager
-
-
-
+from .models import *
 class ProductsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
@@ -51,16 +39,16 @@ class DelivpartSerializer(serializers.ModelSerializer):
 
 class InvmanSerializer(serializers.ModelSerializer):
     class Meta:
-        model = InterruptedError
+        model = Invman
         fields = '__all__'
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
-        model = InterruptedError
+        model = Brand
         fields = '__all__'
 
 class FinmanSerializer(serializers.ModelSerializer):
     class Meta:
-        model = InterruptedError
+        model = FinManager
         fields = '__all__'
 
